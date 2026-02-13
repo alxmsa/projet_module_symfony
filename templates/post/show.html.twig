@@ -1,38 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post{% endblock %}
+{% block title %}Post details{% endblock %}
 
 {% block body %}
-    <h1>Post</h1>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Post details</h1>
+      <div class="orbit-muted">Preview and manage this article.</div>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-light" href="{{ path('app_post_index') }}">Back</a>
+      <a class="btn btn-primary" href="{{ path('app_post_edit', {id: post.id}) }}">Edit</a>
+    </div>
+  </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ post.content }}</td>
-            </tr>
-            <tr>
-                <th>PublishedAt</th>
-                <td>{{ post.publishedAt ? post.publishedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ post.picture }}</td>
-            </tr>
-        </tbody>
-    </table>
+  <div class="card orbit-card overflow-hidden mb-4">
+    {% if post.picture %}
+      <img src="{{ post.picture }}" alt="{{ post.title }}" style="height: 280px; object-fit: cover; width: 100%;">
+    {% endif %}
+    <div class="p-4 p-md-5">
+      <h2 class="h4 mb-2">{{ post.title }}</h2>
+      <div class="orbit-meta mb-3">
+        {% if post.category %}{{ post.category.name }}{% else %}—{% endif %}
+        {% if post.publishedAt %} · {{ post.publishedAt|date('M d, Y H:i') }}{% endif %}
+      </div>
+      <div class="orbit-text">
+        {{ post.content|nl2br }}
+      </div>
+    </div>
+  </div>
 
-    <a href="{{ path('app_post_index') }}">back to list</a>
-
-    <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
-
-    {{ include('post/_delete_form.html.twig') }}
+  <div class="card orbit-card p-4">
+    {% include 'post/_delete_form.html.twig' %}
+  </div>
 {% endblock %}

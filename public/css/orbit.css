@@ -1,0 +1,422 @@
+/* =========================
+   Orbit-ish theme (BS5)
+   ========================= */
+
+/* Fonts (optional). If you want: add the <link> in base.html.twig */
+:root {
+  --orbit-bg: #050814;
+  --orbit-bg-2: #070a1d;
+  --orbit-text: #e7ecff;
+  --orbit-muted: rgba(231, 236, 255, 0.70);
+
+  --orbit-glass: rgba(255, 255, 255, 0.06);
+  --orbit-glass-2: rgba(255, 255, 255, 0.09);
+  --orbit-border: rgba(255, 255, 255, 0.12);
+
+  --orbit-accent: #7c3aed; /* purple */
+  --orbit-accent-2: #22d3ee; /* cyan */
+  --orbit-danger: #ff3b81;
+
+  --orbit-shadow: 0 20px 60px rgba(0,0,0,0.50);
+  --orbit-glow: 0 0 0.8rem rgba(124, 58, 237, 0.45), 0 0 1.8rem rgba(34, 211, 238, 0.25);
+}
+
+/* Base */
+html, body {
+  height: 100%;
+  color: #f1f5ff !important;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.22), transparent 60%),
+    radial-gradient(900px 500px at 90% 20%, rgba(34,211,238,0.18), transparent 55%),
+    radial-gradient(700px 450px at 55% 90%, rgba(255,59,129,0.10), transparent 60%),
+    linear-gradient(180deg, var(--orbit-bg), var(--orbit-bg-2));
+  color: var(--orbit-text);
+  overflow-x: hidden;
+}
+
+/* Starfield layers (pure CSS) */
+.orbit-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -10;
+  background-repeat: repeat;
+  background-size: 600px 600px;
+  opacity: 0.35;
+
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8) 50%, transparent 60%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.6) 50%, transparent 60%),
+    radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.7) 50%, transparent 60%),
+    radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.5) 50%, transparent 60%);
+  animation: orbit-drift 70s linear infinite;
+}
+
+.orbit-stars::before,
+.orbit-stars::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-repeat: repeat;
+  background-size: 600px 600px;
+}
+
+.orbit-stars::before {
+  background-image:
+    radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.55) 50%, transparent 60%),
+    radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,0.65) 50%, transparent 60%),
+    radial-gradient(1px 1px at 85% 10%, rgba(255,255,255,0.45) 50%, transparent 60%);
+  opacity: 0.25;
+  animation: orbit-drift 110s linear infinite reverse;
+}
+
+.orbit-stars::after {
+  background-image:
+    radial-gradient(2px 2px at 25% 15%, rgba(124,58,237,0.45) 50%, transparent 60%),
+    radial-gradient(2px 2px at 75% 55%, rgba(34,211,238,0.35) 50%, transparent 60%),
+    radial-gradient(2px 2px at 50% 85%, rgba(255,59,129,0.25) 50%, transparent 60%);
+  opacity: 0.15;
+  animation: orbit-drift 160s linear infinite;
+}
+
+/* Hard safety stacking context */
+body {
+  position: relative;
+  isolation: isolate;
+}
+
+@keyframes orbit-drift {
+  from { transform: translate3d(0,0,0); }
+  to   { transform: translate3d(-160px, 120px, 0); }
+}
+
+/* Navbar */
+.navbar {
+  background: rgba(8, 10, 30, 0.55) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--orbit-border);
+}
+
+.navbar .navbar-brand {
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.navbar .nav-link {
+  color: rgba(231,236,255,0.85) !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--orbit-text) !important;
+  text-shadow: var(--orbit-glow);
+}
+
+/* Containers & headings */
+h1, h2, h3, h4, h5 {
+  letter-spacing: 0.2px;
+  color: #ffffff !important;
+}
+/* Paragraphs */
+p, li, span, div {
+  color: #f1f5ff;
+}
+
+.text-muted,
+small, .small {
+  color: var(--orbit-muted) !important;
+}
+
+/* Cards / Panels */
+.card, .table, .modal-content, .dropdown-menu, .alert {
+  background: var(--orbit-glass);
+  border: 1px solid var(--orbit-border);
+  box-shadow: var(--orbit-shadow);
+}
+
+.card {
+  border-radius: 16px;
+}
+
+.card-header {
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--orbit-border);
+}
+
+/* Tables */
+.table {
+  color: var(--orbit-text);
+}
+
+.table thead th {
+  color: rgba(231,236,255,0.9);
+  border-bottom-color: rgba(255,255,255,0.12);
+}
+
+.table td, .table th {
+  border-color: rgba(255,255,255,0.10) !important;
+}
+
+/* Forms */
+.form-control, .form-select, .form-check-input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: var(--orbit-text);
+}
+
+.form-control::placeholder {
+  color: rgba(231,236,255,0.55);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: rgba(34,211,238,0.55);
+  box-shadow: 0 0 0 0.25rem rgba(34,211,238,0.12);
+}
+
+/* Buttons */
+.btn-primary {
+  border: none;
+  background: linear-gradient(90deg, var(--orbit-accent), var(--orbit-accent-2));
+  box-shadow: 0 0 0.8rem rgba(124,58,237,0.35);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+  box-shadow: var(--orbit-glow);
+}
+
+.btn-outline-light {
+  border-color: rgba(255,255,255,0.30);
+  color: rgba(231,236,255,0.9);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* Badges */
+.badge.bg-success { box-shadow: 0 0 0.7rem rgba(25,135,84,0.25); }
+.badge.bg-secondary { opacity: 0.9; }
+
+/* Links */
+a { color: rgba(34,211,238,0.95); }
+a:hover { color: rgba(231,236,255,1); text-shadow: var(--orbit-glow); }
+
+/* Optional: nicer page spacing */
+main.orbit-main {
+  padding-top: 1.25rem;
+  padding-bottom: 2rem;
+}
+nav.navbar,
+main.orbit-main,
+.container {
+  position: relative;
+  z-index: 1;
+}
+.orbit-hero {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  backdrop-filter: blur(12px);
+}
+.orbit-card img {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  height: 180px;
+  object-fit: cover;
+}
+.orbit-excerpt {
+  color: rgba(231,236,255,0.75);
+}
+.orbit-hero {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+}
+
+.orbit-hero-img img {
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.orbit-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+}
+
+.orbit-content {
+  color: rgba(231,236,255,0.86);
+  line-height: 1.75;
+}
+/* ===== Modern Business style comments ===== */
+
+.orbit-text { color: #f6f8ff !important; }
+.orbit-muted { color: rgba(255,255,255,0.78) !important; }
+
+.orbit-divider {
+  border-color: rgba(255,255,255,0.14);
+  opacity: 1;
+}
+
+.orbit-comment {
+  padding: 0.25rem 0;
+}
+
+.orbit-meta {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+}
+
+.orbit-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(34,211,238,0.75));
+  box-shadow: 0 0 1.2rem rgba(124,58,237,0.30);
+  flex: 0 0 auto;
+}
+
+.orbit-pill {
+  background: rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+/* ===== Modern Business style comments ===== */
+
+.orbit-text { color: #f6f8ff !important; }
+.orbit-muted { color: rgba(255,255,255,0.78) !important; }
+
+.orbit-divider {
+  border-color: rgba(255,255,255,0.14);
+  opacity: 1;
+}
+
+.orbit-comment {
+  padding: 0.25rem 0;
+}
+
+.orbit-meta {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+}
+
+.orbit-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(34,211,238,0.75));
+  box-shadow: 0 0 1.2rem rgba(124,58,237,0.30);
+  flex: 0 0 auto;
+}
+
+.orbit-pill {
+  background: rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+/* ===== Leave a comment (Modern Business form style) ===== */
+
+.orbit-form-card {
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.orbit-label {
+  color: #ffffff !important;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.orbit-textarea {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #ffffff !important;
+}
+
+.orbit-textarea::placeholder {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+.orbit-textarea:focus {
+  border-color: rgba(34,211,238,0.65) !important;
+  box-shadow: 0 0 0 0.25rem rgba(34,211,238,0.12) !important;
+}
+
+.orbit-callout {
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px dashed rgba(255,255,255,0.22);
+}
+
+.orbit-callout-title {
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.orbit-callout-text {
+  color: rgba(255,255,255,0.82);
+}
+.orbit-input, .orbit-select, .orbit-textarea {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #ffffff !important;
+}
+.orbit-input::placeholder, .orbit-textarea::placeholder {
+  color: rgba(255,255,255,0.65) !important;
+}
+.orbit-input:focus, .orbit-select:focus, .orbit-textarea:focus {
+  border-color: rgba(34,211,238,0.65) !important;
+  box-shadow: 0 0 0 0.25rem rgba(34,211,238,0.12) !important;
+}
+/* ===== Fix white table background ===== */
+
+.table {
+  --bs-table-bg: transparent !important;
+  --bs-table-striped-bg: rgba(255,255,255,0.05) !important;
+  --bs-table-hover-bg: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+.table thead {
+  background: rgba(255,255,255,0.06);
+}
+
+.table th,
+.table td {
+  border-color: rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.orbit-input, .orbit-select, .orbit-textarea {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #ffffff !important;
+}
+.orbit-input::placeholder, .orbit-textarea::placeholder {
+  color: rgba(255,255,255,0.65) !important;
+}
+.orbit-input:focus, .orbit-select:focus, .orbit-textarea:focus {
+  border-color: rgba(34,211,238,0.65) !important;
+  box-shadow: 0 0 0 0.25rem rgba(34,211,238,0.12) !important;
+}

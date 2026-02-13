@@ -1,41 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post index{% endblock %}
+{% block title %}Manage posts{% endblock %}
 
 {% block body %}
-    <h1>Post index</h1>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Manage posts</h1>
+      <div class="orbit-muted">Create, edit and delete articles.</div>
+    </div>
+    <a class="btn btn-primary" href="{{ path('app_post_new') }}">Create new</a>
+  </div>
 
-    <table class="table">
-        <thead>
+  <div class="card orbit-card p-3 p-md-4">
+    {% if posts is empty %}
+      <p class="mb-0 orbit-muted">No posts yet.</p>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>PublishedAt</th>
-                <th>Picture</th>
-                <th>actions</th>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Published</th>
+              <th class="text-end">Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
+          </thead>
+          <tbody>
+            {% for post in posts %}
+              <tr>
                 <td>{{ post.id }}</td>
-                <td>{{ post.title }}</td>
-                <td>{{ post.content }}</td>
-                <td>{{ post.publishedAt ? post.publishedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ post.picture }}</td>
-                <td>
-                    <a href="{{ path('app_post_show', {'id': post.id}) }}">show</a>
-                    <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
+                <td class="fw-semibold">{{ post.title }}</td>
+                <td>{{ post.category ? post.category.name : '—' }}</td>
+                <td>{{ post.publishedAt ? post.publishedAt|date('M d, Y H:i') : '—' }}</td>
+                <td class="text-end">
+                  <div class="d-inline-flex gap-2">
+                    <a class="btn btn-sm btn-outline-light" href="{{ path('app_post_show', {id: post.id}) }}">View</a>
+                    <a class="btn btn-sm btn-outline-light" href="{{ path('app_post_edit', {id: post.id}) }}">Edit</a>
+                  </div>
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_post_new') }}">Create new</a>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}

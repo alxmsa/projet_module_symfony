@@ -1,4 +1,34 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+  <div class="row g-3">
+    <div class="col-12">
+      {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+      {{ form_widget(form.title, {'attr': {'class': 'form-control orbit-input', 'placeholder': 'Enter a title'}}) }}
+      {{ form_errors(form.title) }}
+    </div>
+
+    <div class="col-12">
+      {{ form_label(form.picture, 'Image URL', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+      {{ form_widget(form.picture, {'attr': {'class': 'form-control orbit-input', 'placeholder': 'https://...'}}) }}
+      {{ form_errors(form.picture) }}
+    </div>
+
+    <div class="col-12 col-md-6">
+      {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+      {{ form_widget(form.category, {'attr': {'class': 'form-select orbit-select'}}) }}
+      {{ form_errors(form.category) }}
+    </div>
+
+    <div class="col-12">
+      {{ form_label(form.content, 'Content', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+      {{ form_widget(form.content, {'attr': {'class': 'form-control orbit-textarea', 'rows': 8, 'placeholder': 'Write your article...'}}) }}
+      {{ form_errors(form.content) }}
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <a class="btn btn-outline-light" href="{{ path('app_post_index') }}">Cancel</a>
+    <button class="btn btn-primary px-4">{{ button_label|default('Save') }}</button>
+  </div>
+
 {{ form_end(form) }}

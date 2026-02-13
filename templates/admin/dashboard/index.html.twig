@@ -1,20 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Admin/DashboardController!{% endblock %}
+{% block title %}Admin dashboard{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Admin dashboard</h1>
+      <div class="orbit-muted">Manage your blog content and users.</div>
+    </div>
+  </div>
 
-<div class="example-wrapper">
-    <h1>Hello ! ✅</h1>
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-md-4">
+      <div class="card orbit-card p-4 h-100">
+        <div class="orbit-muted">Posts</div>
+        <div class="display-6 fw-bold">{{ totalPosts }}</div>
+        <div class="d-grid mt-3">
+          <a class="btn btn-primary" href="{{ path('app_post_index') }}">Manage posts</a>
+        </div>
+      </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/alex/Desktop/IPSSI/symfony/projet_finale_module/blog/src/Controller/Admin/DashboardController.php</code></li>
-        <li>Your template at <code>/Users/alex/Desktop/IPSSI/symfony/projet_finale_module/blog/templates/admin/dashboard/index.html.twig</code></li>
-    </ul>
-</div>
+    <div class="col-12 col-md-4">
+      <div class="card orbit-card p-4 h-100">
+        <div class="orbit-muted">Users</div>
+        <div class="display-6 fw-bold">{{ totalUsers }}</div>
+        <div class="small orbit-muted mt-1">
+          Active: {{ activeUsers }} · Pending: {{ pendingUsers }}
+        </div>
+        <div class="d-grid mt-3">
+          <a class="btn btn-outline-light" href="{{ path('admin_user_index') }}">Manage users</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card orbit-card p-4 h-100">
+        <div class="orbit-muted">Comments</div>
+        <div class="display-6 fw-bold">{{ totalComments }}</div>
+        <div class="d-grid mt-3">
+          <a class="btn btn-outline-light" href="{{ path('article_index') }}">View site</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card orbit-card p-4">
+    <h2 class="h5 mb-3">Quick actions</h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-primary" href="{{ path('app_post_new') }}">Create a post</a>
+      <a class="btn btn-outline-light" href="{{ path('admin_user_index') }}">Approve users</a>
+      <a class="btn btn-outline-light" href="{{ path('article_index') }}">Go to public site</a>
+    </div>
+  </div>
 {% endblock %}

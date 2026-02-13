@@ -3,15 +3,24 @@
 {% block title %}Articles{% endblock %}
 
 {% block body %}
-  <h1>Articles</h1>
+    <div class="p-4 p-md-5 mb-4 rounded orbit-hero">
+        <div class="col-lg-8">
+            <h1 class="display-6 fw-bold">Explore the Blog</h1>
+            <p class="lead mb-0 text-muted">
+                Space-inspired posts about Symfony, PHP, and backend engineering.
+            </p>
+        </div>
+    </div>
 
-  {% if posts is empty %}
-    <p>Aucun article pour le moment.</p>
-  {% else %}
-    <ul>
-      {% for post in posts %}
-        <li><a href="{{ path('article_show', {id: post.id}) }}">{{ post.title }}</a> — {{ post.publishedAt ? post.publishedAt|date('d/m/Y H:i') : '' }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+    {% if posts is empty %}
+        <p>No articles yet.</p>
+    {% else %}
+        <div class="row g-4">
+            {% for post in posts %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    {% include 'article/_card.html.twig' with { post: post } %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

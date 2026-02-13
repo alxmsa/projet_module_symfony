@@ -3,19 +3,72 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-6">
 
-    {{ form_errors(registrationForm) }}
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-2">Create your account</h1>
+        <div class="orbit-muted">Join the community and start commenting.</div>
+      </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.firstName) }}
-        {{ form_row(registrationForm.lastName) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+      <div class="card orbit-card p-4 p-md-5">
+        {{ form_start(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              {{ form_label(registrationForm.firstName, 'First name', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control orbit-input', 'placeholder': 'John'}}) }}
+              {{ form_errors(registrationForm.firstName) }}
+            </div>
+
+            <div class="col-12 col-md-6">
+              {{ form_label(registrationForm.lastName, 'Last name', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control orbit-input', 'placeholder': 'Doe'}}) }}
+              {{ form_errors(registrationForm.lastName) }}
+            </div>
+
+            <div class="col-12">
+              {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control orbit-input', 'placeholder': 'you@example.com'}}) }}
+              {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="col-12">
+              {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control orbit-input', 'placeholder': '••••••••'}}) }}
+              {{ form_errors(registrationForm.plainPassword) }}
+              <div class="form-text orbit-muted mt-1">
+                Use at least 8 characters.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-check">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(registrationForm.agreeTerms, 'I agree to the terms', {'label_attr': {'class': 'form-check-label orbit-text'}}) }}
+                {{ form_errors(registrationForm.agreeTerms) }}
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button class="btn btn-primary btn-lg">Create account</button>
+          </div>
+
+          <div class="text-center mt-3 orbit-muted">
+            Already have an account?
+            <a href="{{ path('app_login') }}">Log in</a>
+          </div>
+
+        {{ form_end(registrationForm) }}
+      </div>
+
+      <div class="card orbit-card p-3 mt-3">
+        <div class="orbit-muted">
+          After registration, your account may require admin validation before you can log in.
+        </div>
+      </div>
+
+    </div>
+  </div>
 {% endblock %}

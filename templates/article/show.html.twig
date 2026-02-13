@@ -3,50 +3,153 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
-  <a href="{{ path('article_index') }}">← Retour</a>
 
-  <h1 class="mt-3">{{ post.title }}</h1>
+  {# Hero / Header #}
+  <header class="orbit-hero mb-4 overflow-hidden">
+    {% if post.picture %}
+      <div class="orbit-hero-img">
+        <img src="{{ post.picture }}" alt="{{ post.title }}" class="w-100">
+      </div>
+    {% endif %}
 
-  <p class="text-muted">
-    Publié le {{ post.publishedAt ? post.publishedAt|date('d/m/Y H:i') : '' }}
-  </p>
+    <div class="p-4 p-md-5">
+      <a class="btn btn-outline-light btn-sm mb-3" href="{{ path('article_index') }}">← Back to articles</a>
 
-  {% if post.picture %}
-    <img src="{{ post.picture }}" alt="" class="img-fluid rounded mb-3">
-  {% endif %}
+      <h1 class="display-6 fw-bold mb-2">{{ post.title }}</h1>
 
-  <div class="mb-4">
-    {{ post.content|nl2br }}
+      <div class="text-muted">
+        {% if post.publishedAt %}Published {{ post.publishedAt|date('M d, Y H:i') }}{% endif %}
+        {% if post.category %} · <span class="orbit-badge">{{ post.category.name }}</span>{% endif %}
+        {% if post.author %} · by {{ post.author.firstName }} {{ post.author.lastName }}{% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="row g-4">
+
+    {# Main content #}
+    <div class="col-12 col-lg-8">
+      <article class="card orbit-card p-4 p-md-5">
+        <div class="orbit-content">
+          {{ post.content|nl2br }}
+        </div>
+      </article>
+
+      {# ===== Comments (Modern Business style) ===== #}
+      <section class="mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4 mb-0">Comments</h2>
+          <span class="badge rounded-pill text-bg-light orbit-pill">
+            {{ post.comments|length }} total
+          </span>
+        </div>
+
+        <div class="card orbit-card p-4">
+          {% if post.comments is empty %}
+            <p class="mb-0 orbit-muted">No comments yet.</p>
+          {% else %}
+            <div class="d-grid gap-4">
+              {% for c in post.comments %}
+                <div class="orbit-comment">
+                  <div class="d-flex gap-3">
+                    <div class="orbit-avatar">
+                      {{ (c.author ? c.author.firstName|default('A') : 'A')|first|upper }}
+                    </div>
+
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                          <div class="fw-semibold orbit-text">
+                            {{ c.author ? (c.author.firstName ~ ' ' ~ c.author.lastName) : 'Anonymous' }}
+                          </div>
+                          <div class="orbit-meta">
+                            {{ c.createdAt ? c.createdAt|date('M d, Y \\a\\t H:i') : '' }}
+                            {% if c.author %} · {{ c.author.email }}{% endif %}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mt-2 orbit-text">
+                        {{ c.content|nl2br }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% if not loop.last %}
+                  <hr class="orbit-divider my-0">
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="card orbit-card p-4 mt-4 orbit-form-card">
+          {% if app.user %}
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="h5 mb-0">Leave a comment</h3>
+              <span class="small orbit-meta">Logged in as {{ app.user.email }}</span>
+            </div>
+
+            {{ form_start(commentForm) }}
+              <div class="mb-3">
+                {{ form_label(commentForm.content, 'Message', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+                {{ form_widget(commentForm.content, {'attr': {'class': 'form-control orbit-textarea', 'rows': 4, 'placeholder': 'Write your comment...'}}) }}
+                {{ form_errors(commentForm.content) }}
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button class="btn btn-primary px-4">Post comment</button>
+              </div>
+            {{ form_end(commentForm) }}
+
+          {% else %}
+            <div class="orbit-callout">
+              <div class="orbit-callout-title">Want to join the discussion?</div>
+              <div class="orbit-callout-text">
+                <a href="{{ path('app_login') }}">Log in</a> to post a comment.
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </section>
+    </div>
+
+    {# Sidebar #}
+    <aside class="col-12 col-lg-4">
+      <div class="card orbit-card p-4 mb-4">
+        <h3 class="h5">About this article</h3>
+        <ul class="list-unstyled mb-0 text-muted">
+          <li class="mb-2">
+            <strong class="text-white">Category:</strong>
+            {{ post.category ? post.category.name : '—' }}
+          </li>
+          <li class="mb-2">
+            <strong class="text-white">Published:</strong>
+            {{ post.publishedAt ? post.publishedAt|date('M d, Y') : '—' }}
+          </li>
+          <li>
+            <strong class="text-white">Author:</strong>
+            {% if post.author %}
+              {{ post.author.firstName }} {{ post.author.lastName }}
+            {% else %}
+              —
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+
+      <div class="card orbit-card p-4">
+        <h3 class="h5">Actions</h3>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-light" href="{{ path('article_index') }}">Browse more</a>
+          {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-light" href="{{ path('app_post_index') }}">Manage posts</a>
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+
   </div>
 
-  <hr class="my-4">
-
-<h2>Commentaires</h2>
-
-{% if post.comments is empty %}
-  <p>Aucun commentaire.</p>
-{% else %}
-  <ul class="list-group mb-3">
-    {% for c in post.comments %}
-      <li class="list-group-item">
-        <div class="small text-muted">
-          {{ c.author ? c.author.email : 'Anonyme' }} — {{ c.createdAt|date('d/m/Y H:i') }}
-        </div>
-        <div>{{ c.content|nl2br }}</div>
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-{% if app.user %}
-  <h3>Ajouter un commentaire</h3>
-  {{ form_start(commentForm) }}
-    {{ form_row(commentForm.content) }}
-    <button class="btn btn-primary">Envoyer</button>
-  {{ form_end(commentForm) }}
-{% else %}
-  <p>
-    <a href="{{ path('app_login') }}">Connecte-toi</a> pour ajouter un commentaire.
-  </p>
-{% endif %}
 {% endblock %}
