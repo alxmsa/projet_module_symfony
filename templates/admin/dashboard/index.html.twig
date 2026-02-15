@@ -37,9 +37,20 @@
     <div class="col-12 col-md-4">
       <div class="card orbit-card p-4 h-100">
         <div class="orbit-muted">Comments</div>
-        <div class="display-6 fw-bold">{{ totalComments }}</div>
+
+        <div class="display-6 fw-bold">
+          {{ totalComments }}
+        </div>
+
+        <div class="orbit-muted small mt-1">
+          Click below to moderate pending comments
+        </div>
+
         <div class="d-grid mt-3">
-          <a class="btn btn-outline-light" href="{{ path('article_index') }}">View site</a>
+          <a class="btn btn-primary"
+            href="{{ path('admin_comment_index') }}">
+            Moderate comments
+          </a>
         </div>
       </div>
     </div>

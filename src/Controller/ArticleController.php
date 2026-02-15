@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Repository\CommentRepository;
 
 final class ArticleController extends AbstractController
 {
@@ -32,7 +33,7 @@ final class ArticleController extends AbstractController
     }
 
     #[Route('/articles/{id}', name: 'article_show', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function show(Post $post, Request $request, EntityManagerInterface $em): Response
+    public function show(Post $post, Request $request, EntityManagerInterface $em, CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -44,6 +45,7 @@ final class ArticleController extends AbstractController
             $comment->setAuthor($this->getUser());
             $comment->setPost($post);
             $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setStatus('pending');
 
             $em->persist($comment);
             $em->flush();
@@ -51,9 +53,15 @@ final class ArticleController extends AbstractController
             return $this->redirectToRoute('article_show', ['id' => $post->getId()]);
         }
 
+        $approvedComments = $commentRepository->findBy(
+            ['post' => $post, 'status' => 'approved'],
+            ['createdAt' => 'DESC']
+        );
+
         return $this->render('article/show.html.twig', [
             'post' => $post,
             'commentForm' => $form->createView(),
+            'comments' => $approvedComments,
         ]);
     }
 }

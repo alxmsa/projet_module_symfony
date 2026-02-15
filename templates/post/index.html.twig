@@ -34,9 +34,10 @@
                 <td>{{ post.category ? post.category.name : '—' }}</td>
                 <td>{{ post.publishedAt ? post.publishedAt|date('M d, Y H:i') : '—' }}</td>
                 <td class="text-end">
-                  <div class="d-inline-flex gap-2">
+                  <div class="d-inline-flex gap-3">
                     <a class="btn btn-sm btn-outline-light" href="{{ path('app_post_show', {id: post.id}) }}">View</a>
                     <a class="btn btn-sm btn-outline-light" href="{{ path('app_post_edit', {id: post.id}) }}">Edit</a>
+                    {% include 'post/_delete_form.html.twig' %}
                   </div>
                 </td>
               </tr>

@@ -21,8 +21,8 @@ class Comment
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $status = null;
+    #[ORM\Column(length: 20)]
+    private string $status = 'pending';
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?User $author = null;
@@ -30,6 +30,7 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Post $post = null;
+
 
     public function getId(): ?int
     {
@@ -53,24 +54,22 @@ class Comment
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
     {
         if ($this->createdAt === null) {
             $this->createdAt = new \DateTimeImmutable();
         }
-
-        return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(?string $status): static
+    public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 

@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %}Moderate comments{% endblock %}
+
+{% block body %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">Moderate comments</h1>
+      <div class="orbit-muted">Approve or reject comments before they appear publicly.</div>
+    </div>
+  </div>
+
+  {% for label, messages in app.flashes %}
+    {% for message in messages %}
+      <div class="alert alert-{{ label }}">{{ message }}</div>
+    {% endfor %}
+  {% endfor %}
+
+<div class="card orbit-card p-4 mb-4">
+  <h2 class="h5 mb-3">Approved comments</h2>
+
+  {% set approvedComments = comments|filter(c => c.status == 'approved') %}
+
+  {% if approvedComments is empty %}
+    <p class="orbit-muted mb-0">No approved comments.</p>
+  {% else %}
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Post</th>
+            <th>Author</th>
+            <th>Created</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in approvedComments %}
+            <tr>
+              <td>{{ c.id }}</td>
+              <td>{{ c.post ? c.post.title : '—' }}</td>
+              <td>{{ c.author ? c.author.email : '—' }}</td>
+              <td>{{ c.createdAt ? c.createdAt|date('M d, Y H:i') : '—' }}</td>
+               <td class="text-end">
+                  <form method="post" action="{{ path('admin_comment_reject', {id: c.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('comment_action_' ~ c.id) }}">
+                    <button class="btn btn-sm btn-outline-light">
+                      Reject
+                    </button>
+                  </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+
+<div class="card orbit-card p-4">
+  <h2 class="h5 mb-3">Pending & Rejected comments</h2>
+
+  {% set otherComments = comments|filter(c => c.status != 'approved') %}
+
+  {% if otherComments is empty %}
+    <p class="orbit-muted mb-0">No comments awaiting moderation.</p>
+  {% else %}
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Post</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in otherComments %}
+            <tr>
+              <td>{{ c.id }}</td>
+              <td>{{ c.post ? c.post.title : '—' }}</td>
+              <td>{{ c.author ? c.author.email : '—' }}</td>
+              <td>
+                {% if c.status == 'rejected' %}
+                  <span class="badge bg-danger">rejected</span>
+                {% else %}
+                  <span class="badge bg-secondary">pending</span>
+                {% endif %}
+              </td>
+              <td>{{ c.createdAt ? c.createdAt|date('M d, Y H:i') : '—' }}</td>
+              <td class="text-end">
+                <div class="d-inline-flex gap-2">
+                  <form method="post" action="{{ path('admin_comment_approve', {id: c.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('comment_action_' ~ c.id) }}">
+                    <button class="btn btn-sm btn-primary">
+                      Approve
+                    </button>
+                  </form>
+
+                  <form method="post" action="{{ path('admin_comment_reject', {id: c.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('comment_action_' ~ c.id) }}">
+                    <button class="btn btn-sm btn-outline-light">
+                      Reject
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

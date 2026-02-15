@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-1">Your profile</h1>
+          <div class="orbit-muted">Update your personal information.</div>
+        </div>
+      </div>
+
+      {% for label, messages in app.flashes %}
+        {% for message in messages %}
+          <div class="alert alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+      {% endfor %}
+
+      <div class="card orbit-card p-4 p-md-5">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          {% if app.user.profilePicture %}
+            <img src="{{ asset(app.user.profilePicture) }}" alt="Profile picture"
+                 style="width:72px;height:72px;object-fit:cover;border-radius:999px;border:1px solid rgba(255,255,255,0.2);">
+          {% else %}
+            <div class="orbit-avatar" style="width:72px;height:72px;">
+              {{ app.user.email|first|upper }}
+            </div>
+          {% endif %}
+
+          <div>
+            <div class="fw-semibold orbit-text">{{ app.user.email }}</div>
+            <div class="orbit-muted">Account settings</div>
+          </div>
+        </div>
+
+        {{ form_start(profileForm, { attr: { enctype: 'multipart/form-data' } }) }}
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              {{ form_label(profileForm.firstName, 'First name', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(profileForm.firstName, {'attr': {'class': 'form-control orbit-input'}}) }}
+              {{ form_errors(profileForm.firstName) }}
+            </div>
+
+            <div class="col-12 col-md-6">
+              {{ form_label(profileForm.lastName, 'Last name', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(profileForm.lastName, {'attr': {'class': 'form-control orbit-input'}}) }}
+              {{ form_errors(profileForm.lastName) }}
+            </div>
+
+            <div class="col-12">
+              {{ form_label(profileForm.profileImage, 'Profile picture', {'label_attr': {'class': 'form-label orbit-label'}}) }}
+              {{ form_widget(profileForm.profileImage, {'attr': {'class': 'form-control orbit-input'}}) }}
+              {{ form_errors(profileForm.profileImage) }}
+              <div class="form-text orbit-muted mt-1">JPG, PNG or WEBP. Max 2MB.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-primary px-4">Save changes</button>
+          </div>
+
+        {{ form_end(profileForm) }}
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
