@@ -41,9 +41,10 @@
         <div class="display-6 fw-bold">
           {{ totalComments }}
         </div>
-
-        <div class="orbit-muted small mt-1">
-          Click below to moderate pending comments
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <span class="badge bg-success">Approved: {{ approvedComments }}</span>
+          <span class="badge bg-secondary">Pending: {{ pendingComments }}</span>
+          <span class="badge bg-danger">Rejected: {{ rejectedComments }}</span>
         </div>
 
         <div class="d-grid mt-3">

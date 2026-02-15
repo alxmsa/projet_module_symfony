@@ -22,6 +22,11 @@ class DashboardController extends AbstractController
         $totalUsers = $userRepository->count([]);
         $pendingUsers = $userRepository->count(['isActive' => false]);
         $activeUsers = $userRepository->count(['isActive' => true]);
+        $totalComments = $commentRepository->count([]);
+
+        $approvedComments = $commentRepository->count(['status' => 'approved']);
+        $pendingComments  = $commentRepository->count(['status' => 'pending']);
+        $rejectedComments = $commentRepository->count(['status' => 'rejected']);
 
         $totalPosts = $postRepository->count([]);
         $totalComments = $commentRepository->count([]);
@@ -32,6 +37,9 @@ class DashboardController extends AbstractController
             'activeUsers' => $activeUsers,
             'totalPosts' => $totalPosts,
             'totalComments' => $totalComments,
+            'approvedComments' => $approvedComments,
+            'pendingComments' => $pendingComments,
+            'rejectedComments' => $rejectedComments,
         ]);
     }
 }
